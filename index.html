@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>DAA Practical — All 14 C++ Programs</title>
+  <style>
+    :root { --bg:#f5f7fb; --paper:#fff; --ink:#152235; --muted:#68768a; --line:#dfe5ed; --blue:#2254d2; --blue2:#e9efff; --code:#101725; --codebar:#1b2637; --green:#167a54; }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible{outline:3px solid #a5bfff;outline-offset:2px}
+    .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+    header{background:var(--paper);border-bottom:1px solid var(--line)}
+    .mast{padding:38px 0 30px}
+    .eyebrow{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    h1{font-size:clamp(27px,4vw,44px);letter-spacing:-.045em;line-height:1.13;margin:11px 0}
+    .lede{color:var(--muted);max-width:640px;margin:12px 0 0}
+    .statline{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+    .chip{display:inline-flex;align-items:center;background:var(--blue2);border:1px solid #dbe5fe;color:#244aa2;border-radius:9px;padding:6px 11px;font-size:12px;font-weight:700}
+    .chip.green{background:#e9f7f0;border-color:#c8ead7;color:#116d4a}
+    .toolbar-wrap{position:sticky;top:0;z-index:20;background:rgba(245,247,251,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:16px 0}
+    .search{flex:1 1 260px;height:44px;padding:0 15px;border:1px solid #ced7e5;border-radius:10px;background:white;color:var(--ink);outline:none}
+    .tabs{display:flex;gap:6px;background:#e9eef5;padding:4px;border-radius:11px}
+    .tab{border:0;border-radius:8px;padding:8px 13px;background:transparent;color:#566579;font-weight:700;font-size:12px}
+    .tab.active{color:#244aa2;background:#fff;box-shadow:0 1px 5px #0d253018}
+    .toolbtn{padding:9px 12px;border:1px solid #cfdae8;border-radius:9px;background:white;color:#34465f;font-size:12px;font-weight:700}
+    main.wrap{padding-top:24px;padding-bottom:45px}
+    .results{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;color:var(--muted);font-size:13px}
+    .list{display:grid;gap:13px}
+    .card{border:1px solid var(--line);border-radius:15px;background:var(--paper);box-shadow:0 3px 10px #1b305008;overflow:hidden}
+    .cardhead{padding:18px 20px;display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+    .number{font-size:13px;font-weight:850;border-radius:9px;width:38px;height:38px;display:grid;place-items:center;color:#2b55bc;background:#e9efff;flex-shrink:0;font-variant-numeric:tabular-nums}
+    .heading{flex:1 1 250px;min-width:0}
+    .heading h2{font-size:17px;line-height:1.4;letter-spacing:-.02em;margin:0}
+    .filename{color:var(--muted);font-size:12px;word-break:break-all;margin-top:2px}
+    .actions{display:flex;gap:7px;flex-wrap:wrap}
+    .btn{background:white;border:1px solid #cbd6e5;color:#34435b;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:750;min-height:38px}
+    .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+    .btn:hover,.toolbtn:hover{filter:brightness(.97)}
+    .btn.primary:hover{background:#1846b9}
+    .codewrap{border-top:1px solid #27354b;background:var(--code);display:none}
+    .card.open .codewrap{display:block}
+    .codehead{display:flex;align-items:center;justify-content:space-between;background:var(--codebar);color:#c8d4e5;padding:9px 18px;font-size:12px}
+    .codehead .dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:#7fd0ac;margin-right:7px}
+    pre{margin:0;padding:19px 22px;color:#e1e9f7;background:var(--code);overflow:auto;white-space:pre;tab-size:4;font:13px/1.72 "Cascadia Code","Fira Code",Consolas,Monaco,monospace;max-height:680px}
+    .empty{border:1px dashed var(--line);padding:45px 20px;text-align:center;color:var(--muted);border-radius:14px;background:#fff}
+    .foot{border-top:1px solid var(--line);padding:23px 0 40px;color:var(--muted);font-size:12px}
+    .foot a{color:var(--blue)}
+    #toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,15px);background:#163b2c;color:white;border-radius:10px;padding:12px 18px;font-weight:650;opacity:0;pointer-events:none;transition:opacity .18s, transform .18s;box-shadow:0 12px 35px #0002;z-index:50}
+    #toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:600px){.wrap{padding:0 14px}.mast{padding:30px 0 26px}.cardhead{padding:15px}.heading h2{font-size:15px}.actions{width:100%}.actions .btn{flex:1}.tabs{width:100%}.tab{flex:1}pre{font-size:12px;padding:14px}.toolbar{gap:8px}}
+    @media print {.toolbar-wrap,.actions,.toolbtn,#toast{display:none!important}.codewrap{display:block!important}pre{max-height:none;white-space:pre-wrap}body{background:white}.card{break-inside:avoid;box-shadow:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap mast">
+      <div class="eyebrow">DAA Practical · C++ Reference</div>
+      <h1>All 14 programs. One file.</h1>
+      <p class="lede">Your studied array-based implementations from Sameet728/DAA, bundled into this standalone HTML file. Search for a topic, preview its code, or copy the complete program instantly — even without internet.</p>
+      <div class="statline"><span class="chip">14 full C++ programs</span><span class="chip green">12 studied</span><span class="chip">2 left to practice: 09 &amp; 10</span><span class="chip">Works offline</span></div>
+    </div>
+  </header>
+  <div class="toolbar-wrap">
+    <div class="wrap toolbar">
+      <input id="search" class="search" type="search" placeholder="Search: merge, knapsack, huffman, 09..." aria-label="Search programs">
+      <div class="tabs" role="group" aria-label="Filter programs">
+        <button class="tab active" data-filter="all">All</button>
+        <button class="tab" data-filter="studied">Studied</button>
+        <button class="tab" data-filter="remaining">Remaining</button>
+      </div>
+      <button class="toolbtn" id="expandAll">Expand all</button>
+      <button class="toolbtn" id="collapseAll">Collapse all</button>
+    </div>
+  </div>
+  <main class="wrap">
+    <div class="results"><span id="resultCount">14 programs</span><span>Click <strong>Copy code</strong> to copy a complete, standalone C++ file</span></div>
+    <div class="list" id="programs"></div>
+    <div class="empty" id="noResults" hidden>No matching programs. Try another search term.</div>
+  </main>
+  <footer class="foot"><div class="wrap">Source: <a href="https://github.com/Sameet728/DAA" target="_blank" rel="noopener noreferrer">Sameet728/DAA</a>. These are the simplified versions studied for your practical exam, not necessarily exact copies of the assignment PDFs. Each program has its own <code>main()</code>; compile separately.</div></footer>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script>
+  "use strict";
+  const PROGRAMS = [{"number":1,"file":"01_Merge_Sort.cpp","title":"Merge Sort","code":"#include \u003ciostream\u003e\n\nusing namespace std;\n\nint temp[100];\n\nvoid merge(int a[], int low, int mid, int high) {\n    int i = low, j = mid + 1, k = low;\n    while (i \u003c= mid \u0026\u0026 j \u003c= high) {\n        if (a[i] \u003c= a[j]) {\n            temp[k] = a[i];\n            i++;\n        }\n        else {\n            temp[k] = a[j];\n            j++;\n        }\n\n        k++;\n    }\n\n    while (i \u003c= mid) {\n        temp[k] = a[i];\n        i++;\n        k++;\n    }\n\n    while (j \u003c= high) {\n        temp[k] = a[j];\n        j++;\n        k++;\n    }\n\n    for (int x = low; x \u003c= high; x++) {\n        a[x] = temp[x];\n    }\n}\n\nvoid mergeSort(int a[], int low, int high) {\n    if (low \u003c high) {\n        int mid = (low + high) / 2;\n        mergeSort(a, low, mid);\n        mergeSort(a, mid + 1, high);\n        merge(a, low, mid, high);\n    }\n}\n\nint main() {\n    int n, a[100];\n    cout \u003c\u003c \"Enter number of elements: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 100) {\n        cout \u003c\u003c \"Invalid size\";\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter elements: \";\n    for (int i = 0; i \u003c n; i++) {\n        cin \u003e\u003e a[i];\n    }\n\n    mergeSort(a, 0, n - 1);\n    cout \u003c\u003c \"Sorted Array: \";\n    for (int i = 0; i \u003c n; i++) {\n        cout \u003c\u003c a[i] \u003c\u003c \" \";\n    }\n\n    cout \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":2,"file":"02_Strassens_Matrix_Multiplication.cpp","title":"Strassens Matrix Multiplication","code":"#include \u003ciostream\u003e\n\nusing namespace std;\n\nint main() {\n    int A[2][2], B[2][2], C[2][2];\n    cout \u003c\u003c \"Enter Matrix A:\\n\";\n    for (int i = 0; i \u003c 2; i++) {\n        for (int j = 0; j \u003c 2; j++) {\n            cin \u003e\u003e A[i][j];\n        }\n    }\n\n    cout \u003c\u003c \"Enter Matrix B:\\n\";\n    for (int i = 0; i \u003c 2; i++) {\n        for (int j = 0; j \u003c 2; j++) {\n            cin \u003e\u003e B[i][j];\n        }\n    }\n\n    int a = A[0][0], b = A[0][1];\n    int c = A[1][0], d = A[1][1];\n    int e = B[0][0], f = B[0][1];\n    int g = B[1][0], h = B[1][1];\n    int M1 = (a+d)*(e+h);\n    int M2 = (c+d)*e;\n    int M3 = a*(f-h);\n    int M4 = d*(g-e);\n    int M5 = (a+b)*h;\n    int M6 = (c-a)*(e+f);\n    int M7 = (b-d)*(g+h);\n    C[0][0] = M1+M4-M5+M7;\n    C[0][1] = M3+M5;\n    C[1][0] = M2+M4;\n    C[1][1] = M1-M2+M3+M6;\n    cout \u003c\u003c \"Result Matrix:\\n\";\n    for (int i = 0; i \u003c 2; i++) {\n        for (int j = 0; j \u003c 2; j++) {\n            cout \u003c\u003c C[i][j] \u003c\u003c \" \";\n        }\n\n        cout \u003c\u003c endl;\n    }\n\n    return 0;\n}\n","studied":true},{"number":3,"file":"03_Fractional_Knapsack.cpp","title":"Fractional Knapsack","code":"#include \u003ciostream\u003e\n#include \u003calgorithm\u003e\n\nusing namespace std;\n\nstruct Item {\n    double weight, profit, ratio;\n};\n\nbool compare(Item a, Item b) {\n    return a.ratio \u003e b.ratio;\n}\n\nint main() {\n    int n;\n    Item a[100];\n    double capacity, totalProfit = 0;\n    cout \u003c\u003c \"Enter number of items: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 100) {\n        cout \u003c\u003c \"Invalid size\";\n        return 0;\n    }\n\n    for (int i = 0; i \u003c n; i++) {\n        cout \u003c\u003c \"Enter weight and profit of item \" \u003c\u003c i + 1 \u003c\u003c \": \";\n        cin \u003e\u003e a[i].weight \u003e\u003e a[i].profit;\n        if (a[i].weight \u003c= 0 || a[i].profit \u003c 0) {\n            cout \u003c\u003c \"Invalid item\";\n            return 0;\n        }\n\n        a[i].ratio = a[i].profit / a[i].weight;\n    }\n\n    cout \u003c\u003c \"Enter bag capacity: \";\n    cin \u003e\u003e capacity;\n    if (capacity \u003c 0) {\n        return 0;\n    }\n\n    sort(a, a + n, compare);\n    for (int i = 0; i \u003c n \u0026\u0026 capacity \u003e 0; i++) {\n        if (a[i].weight \u003c= capacity) {\n            totalProfit += a[i].profit;\n            capacity -= a[i].weight;\n        }\n        else {\n            totalProfit += a[i].ratio * capacity;\n            capacity = 0;\n        }\n    }\n\n    cout \u003c\u003c \"Maximum Profit = \" \u003c\u003c totalProfit \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":4,"file":"04_Huffman_Coding.cpp","title":"Huffman Coding","code":"#include \u003ciostream\u003e\n\nusing namespace std;\n\nstruct Node {\n    char ch;\n    int freq, left, right;\n    bool used;\n};\nNode a[100];\n\nint findMin(int count) {\n    int pos = -1;\n    for (int i = 0; i \u003c count; i++) {\n        if (!a[i].used \u0026\u0026 (pos == -1 || a[i].freq \u003c a[pos].freq)) {\n            pos = i;\n        }\n    }\n\n    return pos;\n}\n\nvoid printCode(int root, char code[], int len) {\n    if (a[root].left == -1) {\n        if (len == 0) {\n            code[len++] = '0';\n        }\n\n        code[len] = '\\0';\n        cout \u003c\u003c a[root].ch \u003c\u003c \" : \" \u003c\u003c code \u003c\u003c endl;\n        return;\n    }\n\n    code[len] = '0';\n    printCode(a[root].left, code, len + 1);\n    code[len] = '1';\n    printCode(a[root].right, code, len + 1);\n}\n\nint main() {\n    int n;\n    cout \u003c\u003c \"Enter number of characters: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 50) {\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter character and frequency:\\n\";\n    for (int i = 0; i \u003c n; i++) {\n        cin \u003e\u003e a[i].ch \u003e\u003e a[i].freq;\n        if (a[i].freq \u003c= 0) {\n            return 0;\n        }\n\n        a[i].left = a[i].right = -1;\n        a[i].used = false;\n    }\n\n    int count = n;\n    while (count \u003c 2*n - 1) {\n        int x = findMin(count);\n        a[x].used = true;\n        int y = findMin(count);\n        a[y].used = true;\n        a[count].ch = '$';\n        a[count].freq = a[x].freq + a[y].freq;\n        a[count].left = x;\n        a[count].right = y;\n        a[count].used = false;\n        count++;\n    }\n\n    char code[100];\n    cout \u003c\u003c \"\\nHuffman Codes:\\n\";\n    printCode(count - 1, code, 0);\n    return 0;\n}\n","studied":true},{"number":5,"file":"05_Zero_One_Knapsack_DP.cpp","title":"0/1 Knapsack DP","code":"#include \u003ciostream\u003e\n#include \u003calgorithm\u003e\n\nusing namespace std;\n\nint dp[101][1001];\n\nint main() {\n    int n, capacity;\n    int weight[100], profit[100];\n    cout \u003c\u003c \"Enter number of items: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 100) {\n        cout \u003c\u003c \"Invalid size\";\n        return 0;\n    }\n\n    for (int i = 0; i \u003c n; i++) {\n        cout \u003c\u003c \"Enter weight and profit for item \" \u003c\u003c i + 1 \u003c\u003c \": \";\n        cin \u003e\u003e weight[i] \u003e\u003e profit[i];\n        if (weight[i] \u003c 0 || profit[i] \u003c 0) {\n            cout \u003c\u003c \"Invalid item\";\n            return 0;\n        }\n    }\n\n    cout \u003c\u003c \"Enter bag capacity: \";\n    cin \u003e\u003e capacity;\n    if (capacity \u003c 0 || capacity \u003e 1000) {\n        cout \u003c\u003c \"Invalid capacity\";\n        return 0;\n    }\n\n    for (int i = 0; i \u003c= n; i++) {\n        for (int w = 0; w \u003c= capacity; w++) {\n            if (i == 0 || w == 0) {\n                dp[i][w] = 0;\n            }\n            else if (weight[i-1] \u003c= w) {\n                dp[i][w] = max(profit[i-1] + dp[i-1][w-weight[i-1]],\n                               dp[i-1][w]);\n            }\n            else {\n                dp[i][w] = dp[i-1][w];\n            }\n        }\n    }\n\n    cout \u003c\u003c \"Maximum Profit = \" \u003c\u003c dp[n][capacity] \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":6,"file":"06_Matrix_Chain_Multiplication.cpp","title":"Matrix Chain Multiplication","code":"#include \u003ciostream\u003e\n#include \u003cclimits\u003e\n\nusing namespace std;\n\nint m[51][51], s[51][51];\n\nvoid printOrder(int i, int j) {\n    if (i == j) {\n        cout \u003c\u003c \"A\" \u003c\u003c i;\n        return;\n    }\n\n    cout \u003c\u003c \"(\";\n    printOrder(i, s[i][j]);\n    printOrder(s[i][j] + 1, j);\n    cout \u003c\u003c \")\";\n}\n\nint main() {\n    int n, p[51];\n    cout \u003c\u003c \"Enter number of matrices: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 50) {\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter dimensions (\" \u003c\u003c n+1 \u003c\u003c \" numbers): \";\n    for (int i = 0; i \u003c= n; i++) {\n        cin \u003e\u003e p[i];\n    }\n\n    for (int i = 1; i \u003c= n; i++) {\n        m[i][i] = 0;\n    }\n\n    for (int L = 2; L \u003c= n; L++) {\n        for (int i = 1; i \u003c= n - L + 1; i++) {\n            int j = i + L - 1;\n            m[i][j] = INT_MAX;\n            for (int k = i; k \u003c j; k++) {\n                int cost = m[i][k] + m[k+1][j]\n                         + p[i-1] * p[k] * p[j];\n                if (cost \u003c m[i][j]) {\n                    m[i][j] = cost;\n                    s[i][j] = k;\n                }\n            }\n        }\n    }\n\n    cout \u003c\u003c \"Minimum multiplications = \" \u003c\u003c m[1][n] \u003c\u003c endl;\n    cout \u003c\u003c \"Optimal order: \";\n    printOrder(1, n);\n    cout \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":7,"file":"07_N_Queens_Backtracking.cpp","title":"N Queens Backtracking","code":"#include \u003ciostream\u003e\n#include \u003ccstdlib\u003e\n\nusing namespace std;\n\nint board[4][4] = {0};\nint n = 4, total = 0;\n\nbool isSafe(int row, int col) {\n    for (int i = 0; i \u003c row; i++) {\n        for (int j = 0; j \u003c n; j++) {\n            if (board[i][j] == 1) {\n                if (j == col || abs(i-row) == abs(j-col)) {\n                    return false;\n                }\n            }\n        }\n    }\n\n    return true;\n}\n\nvoid printBoard() {\n    total++;\n    cout \u003c\u003c \"\\nSolution \" \u003c\u003c total \u003c\u003c \":\\n\";\n    for (int i = 0; i \u003c n; i++) {\n        for (int j = 0; j \u003c n; j++) {\n            if (board[i][j] == 1) {\n                cout \u003c\u003c \"Q \";\n            }\n        }\n        else {\n            cout \u003c\u003c \". \";\n        }\n\n        cout \u003c\u003c endl;\n    }\n}\n\nvoid solve(int row) {\n    if (row == n) {\n        printBoard();\n        return;\n    }\n\n    for (int col = 0; col \u003c n; col++) {\n        if (isSafe(row, col)) {\n            board[row][col] = 1;\n            solve(row + 1);\n            board[row][col] = 0;\n        }\n    }\n}\n\nint main() {\n    solve(0);\n    cout \u003c\u003c \"\\nTotal solutions = \" \u003c\u003c total \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":8,"file":"08_Sum_of_Subsets_Backtracking.cpp","title":"Sum of Subsets Backtracking","code":"#include \u003ciostream\u003e\n\nusing namespace std;\n\nint a[100], x[100];\nint n, target, total = 0;\n\nvoid subset(int i, int sum, int remaining) {\n    if (sum == target) {\n        total++;\n        cout \u003c\u003c \"Subset: \";\n        for (int j = 0; j \u003c i; j++) {\n            if (x[j] == 1) {\n                cout \u003c\u003c a[j] \u003c\u003c \" \";\n            }\n        }\n\n        cout \u003c\u003c endl;\n        return;\n    }\n\n    if (i == n || sum \u003e target || sum + remaining \u003c target) {\n        return;\n    }\n\n    x[i] = 1;\n    subset(i + 1, sum + a[i], remaining - a[i]);\n    x[i] = 0;\n    subset(i + 1, sum, remaining - a[i]);\n}\n\nint main() {\n    int remaining = 0;\n    cout \u003c\u003c \"Enter number of elements: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 100) {\n        cout \u003c\u003c \"Invalid size\";\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter positive elements: \";\n    for (int i = 0; i \u003c n; i++) {\n        cin \u003e\u003e a[i];\n        if (a[i] \u003c= 0) {\n            cout \u003c\u003c \"Only positive elements supported\";\n            return 0;\n        }\n\n        remaining += a[i];\n    }\n\n    cout \u003c\u003c \"Enter target sum: \";\n    cin \u003e\u003e target;\n    if (target \u003c 0) {\n        return 0;\n    }\n\n    subset(0, 0, remaining);\n    if (total == 0) {\n        cout \u003c\u003c \"No subset found\" \u003c\u003c endl;\n    }\n    else {\n        cout \u003c\u003c \"Total subsets = \" \u003c\u003c total \u003c\u003c endl;\n    }\n\n    return 0;\n}\n","studied":true},{"number":9,"file":"09_Zero_One_Knapsack_Branch_and_Bound.cpp","title":"0/1 Knapsack Branch and Bound","code":"#include \u003ciostream\u003e\n\nusing namespace std;\n\nstruct Item {\n    int weight, profit;\n};\nItem items[100];\nint n, capacity;\nlong long bestProfit = 0;\nint taken[100] = {0};\nint bestTaken[100] = {0};\n// Upper bound using Fractional Knapsack after ratio sorting.\n\ndouble upperBound(int i, int weight, long long profit) {\n    int remaining = capacity - weight;\n    double bound = profit;\n    while (i \u003c n \u0026\u0026 items[i].weight \u003c= remaining) {\n        remaining -= items[i].weight;\n        bound += items[i].profit;\n        i++;\n    }\n\n    if (i \u003c n) {\n        bound += (double)remaining * items[i].profit / items[i].weight;\n    }\n\n    return bound;\n}\n\nvoid knapsack(int i, int weight, long long profit) {\n    if (profit \u003e bestProfit) {\n        bestProfit = profit;\n        for (int j = 0; j \u003c n; j++) {\n            bestTaken[j] = taken[j];\n        }\n    }\n\n    if (i == n || weight == capacity) {\n        return;\n    }\n\n    if (upperBound(i, weight, profit) \u003c= bestProfit) {\n        return;\n    }\n\n    // Include item i.\n    if (items[i].weight \u003c= capacity - weight) {\n        taken[i] = 1;\n        knapsack(i + 1, weight + items[i].weight,\n                 profit + items[i].profit);\n        taken[i] = 0;\n    }\n\n    // Exclude item i.\n    knapsack(i + 1, weight, profit);\n}\n\nint main() {\n    cout \u003c\u003c \"Enter number of items and capacity: \";\n    cin \u003e\u003e n \u003e\u003e capacity;\n    if (n \u003c 0 || n \u003e 100 || capacity \u003c 0) {\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter weight and profit of each item:\\n\";\n    for (int i = 0; i \u003c n; i++) {\n        cin \u003e\u003e items[i].weight \u003e\u003e items[i].profit;\n        if (items[i].weight \u003c= 0 || items[i].profit \u003c 0) {\n            return 0;\n        }\n    }\n\n    // Sort by profit/weight ratio (highest first).\n    for (int i = 0; i \u003c n - 1; i++) {\n        for (int j = i + 1; j \u003c n; j++) {\n            if (1LL * items[j].profit * items[i].weight \u003e\n               1LL * items[i].profit * items[j].weight) {\n                Item temp = items[i];\n                items[i] = items[j];\n                items[j] = temp;\n            }\n        }\n    }\n\n    knapsack(0, 0, 0);\n    cout \u003c\u003c \"Maximum profit = \" \u003c\u003c bestProfit \u003c\u003c endl;\n    cout \u003c\u003c \"Selected items (weight, profit): \";\n    int totalWeight = 0;\n    for (int i = 0; i \u003c n; i++) {\n        if (bestTaken[i]) {\n            cout \u003c\u003c \"(\" \u003c\u003c items[i].weight \u003c\u003c \", \" \u003c\u003c items[i].profit \u003c\u003c \") \";\n            totalWeight += items[i].weight;\n        }\n    }\n\n    cout \u003c\u003c \"\\nTotal weight = \" \u003c\u003c totalWeight \u003c\u003c endl;\n    return 0;\n}\n","studied":false},{"number":10,"file":"10_TSP_Branch_and_Bound.cpp","title":"TSP Branch and Bound","code":"#include \u003ciostream\u003e\n#include \u003cclimits\u003e\n\nusing namespace std;\n\nint n, a[15][15], mn[15];\nint visited[15], path[15], bestPath[15];\nint best = INT_MAX;\n\nvoid tsp(int level, int last, int cost) {\n    if (level == n) {\n        int total = cost + a[last][0];\n        if (total \u003c best) {\n            best = total;\n            for (int i = 0; i \u003c n; i++) {\n                bestPath[i] = path[i];\n            }\n        }\n\n        return;\n    }\n\n    for (int j = 1; j \u003c n; j++) {\n        if (!visited[j]) {\n            int newCost = cost + a[last][j];\n            visited[j] = 1;\n            int bound = newCost + mn[j];\n            for (int k = 0; k \u003c n; k++) {\n                if (!visited[k]) {\n                    bound += mn[k];\n                }\n            }\n\n            if (bound \u003c best) {\n                path[level] = j;\n                tsp(level + 1, j, newCost);\n            }\n\n            visited[j] = 0;\n        }\n    }\n}\n\nint main() {\n    cout \u003c\u003c \"Enter number of cities: \";\n    cin \u003e\u003e n;\n    if (n \u003c 2 || n \u003e 15) {\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter cost matrix:\\n\";\n    for (int i = 0; i \u003c n; i++) {\n        for (int j = 0; j \u003c n; j++) {\n            cin \u003e\u003e a[i][j];\n        }\n    }\n\n    for (int i = 0; i \u003c n; i++) {\n        mn[i] = INT_MAX;\n        for (int j = 0; j \u003c n; j++) {\n            if (i != j \u0026\u0026 a[i][j] \u003c mn[i]) {\n                mn[i] = a[i][j];\n            }\n        }\n    }\n\n    visited[0] = 1;\n    path[0] = 0;\n    tsp(1, 0, 0);\n    cout \u003c\u003c \"Minimum cost = \" \u003c\u003c best \u003c\u003c endl;\n    cout \u003c\u003c \"Path: \";\n    for (int i = 0; i \u003c n; i++) {\n        cout \u003c\u003c bestPath[i] + 1 \u003c\u003c \" -\u003e \";\n    }\n\n    cout \u003c\u003c 1 \u003c\u003c endl;\n    return 0;\n}\n","studied":false},{"number":11,"file":"11_Naive_String_Matching.cpp","title":"Naive String Matching","code":"#include \u003ciostream\u003e\n#include \u003ccstring\u003e\n\nusing namespace std;\n\nint main() {\n    char text[100], pat[100];\n    cout \u003c\u003c \"Enter the text: \";\n    cin.getline(text, 100);\n    cout \u003c\u003c \"Enter pattern: \";\n    cin.getline(pat, 100);\n    int n = strlen(text);\n    int m = strlen(pat);\n    if (m == 0 || m \u003e n) {\n        cout \u003c\u003c \"Invalid pattern\";\n        return 0;\n    }\n\n    int count = 0;\n    for (int i = 0; i \u003c= n - m; i++) {\n        int j;\n        for (j = 0; j \u003c m; j++) {\n            if (text[i+j] != pat[j]) {\n                break;\n            }\n        }\n\n        if (j == m) {\n            cout \u003c\u003c \"Pattern found at index \" \u003c\u003c i \u003c\u003c endl;\n            count++;\n        }\n    }\n\n    if (count == 0) {\n        cout \u003c\u003c \"No pattern found\" \u003c\u003c endl;\n    }\n    else {\n        cout \u003c\u003c \"Total patterns found = \" \u003c\u003c count \u003c\u003c endl;\n    }\n\n    return 0;\n}\n","studied":true},{"number":12,"file":"12_Rabin_Karp_and_Boyer_Moore.cpp","title":"Rabin Karp and Boyer Moore","code":"#include \u003ciostream\u003e\n#include \u003ccstring\u003e\n\nusing namespace std;\n\n// Simplified Rabin-Karp using an additive rolling hash.\n\nvoid rabinKarp(char text[], char pat[]) {\n    int n = strlen(text), m = strlen(pat);\n    int p = 0, t = 0, count = 0;\n    for (int i = 0; i \u003c m; i++) {\n        p += pat[i];\n        t += text[i];\n    }\n\n    for (int i = 0; i \u003c= n - m; i++) {\n        if (p == t) {\n            int j;\n            for (j = 0; j \u003c m; j++) {\n                if (text[i+j] != pat[j]) {\n                    break;\n                }\n            }\n\n            if (j == m) {\n                cout \u003c\u003c \"Pattern found at \" \u003c\u003c i \u003c\u003c endl;\n                count++;\n            }\n        }\n\n        if (i \u003c n - m) {\n            t = t - text[i] + text[i+m];\n        }\n    }\n\n    if (count == 0) {\n        cout \u003c\u003c \"Pattern not found\" \u003c\u003c endl;\n    }\n\n    cout \u003c\u003c \"Total matches: \" \u003c\u003c count \u003c\u003c endl;\n}\n\n// Simplified Boyer-Moore using the bad-character rule.\n\nvoid boyerMoore(char text[], char pat[]) {\n    int n = strlen(text), m = strlen(pat);\n    int last[256], count = 0;\n    for (int i = 0; i \u003c 256; i++) {\n        last[i] = -1;\n    }\n\n    for (int i = 0; i \u003c m; i++) {\n        last[(unsigned char)pat[i]] = i;\n    }\n\n    int s = 0;\n    while (s \u003c= n - m) {\n        int j = m - 1;\n        while (j \u003e= 0 \u0026\u0026 pat[j] == text[s+j]) {\n            j--;\n        }\n\n        if (j \u003c 0) {\n            cout \u003c\u003c \"Pattern found at \" \u003c\u003c s \u003c\u003c endl;\n            count++;\n            s++;\n            // Simple safe shift after a full match.\n        }\n        else {\n            int shift = j - last[(unsigned char)text[s+j]];\n            if (shift \u003c 1) {\n                shift = 1;\n            }\n\n            s += shift;\n        }\n    }\n\n    if (count == 0) {\n        cout \u003c\u003c \"Pattern not found\" \u003c\u003c endl;\n    }\n\n    cout \u003c\u003c \"Total matches: \" \u003c\u003c count \u003c\u003c endl;\n}\n\nint main() {\n    char text[100], pat[100];\n    cout \u003c\u003c \"Enter text: \";\n    cin.getline(text, 100);\n    cout \u003c\u003c \"Enter pattern: \";\n    cin.getline(pat, 100);\n    int n = strlen(text), m = strlen(pat);\n    if (m == 0 || m \u003e n) {\n        cout \u003c\u003c \"Invalid Pattern\" \u003c\u003c endl;\n        return 0;\n    }\n\n    cout \u003c\u003c \"\\nRabin-Karp:\\n\";\n    rabinKarp(text, pat);\n    cout \u003c\u003c \"\\nBoyer-Moore:\\n\";\n    boyerMoore(text, pat);\n    return 0;\n}\n","studied":true},{"number":13,"file":"13_Randomized_Quick_Sort.cpp","title":"Randomized Quick Sort","code":"#include \u003ciostream\u003e\n#include \u003calgorithm\u003e\n#include \u003ccstdlib\u003e\n#include \u003cctime\u003e\n\nusing namespace std;\n\nint partition(int a[], int low, int high) {\n    int pivot = a[low], i = low;\n    for (int j = low + 1; j \u003c= high; j++) {\n        if (a[j] \u003c= pivot) {\n            i++;\n            swap(a[i], a[j]);\n        }\n    }\n\n    swap(a[low], a[i]);\n    return i;\n}\n\nint randomPartition(int a[], int low, int high) {\n    int r = low + rand() % (high - low + 1);\n    swap(a[r], a[low]);\n    return partition(a, low, high);\n}\n\nvoid quickSort(int a[], int low, int high) {\n    if (low \u003c high) {\n        int pi = randomPartition(a, low, high);\n        quickSort(a, low, pi - 1);\n        quickSort(a, pi + 1, high);\n    }\n}\n\nint main() {\n    srand(time(0));\n    int n, a[100];\n    cout \u003c\u003c \"Enter number of elements: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 100) {\n        cout \u003c\u003c \"Invalid size\";\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter elements: \";\n    for (int i = 0; i \u003c n; i++) {\n        cin \u003e\u003e a[i];\n    }\n\n    quickSort(a, 0, n - 1);\n    cout \u003c\u003c \"Sorted Array: \";\n    for (int i = 0; i \u003c n; i++) {\n        cout \u003c\u003c a[i] \u003c\u003c \" \";\n    }\n\n    cout \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":14,"file":"14_CAPTCHA_Generation_and_Verification.cpp","title":"CAPTCHA Generation and Verification","code":"#include \u003ciostream\u003e\n#include \u003ccstdlib\u003e\n#include \u003cctime\u003e\n#include \u003ccstring\u003e\n\nusing namespace std;\n\nint main() {\n    char chars[] = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";\n    char captcha[7], input[100];\n    srand(time(0));\n    for (int i = 0; i \u003c 6; i++) {\n        int r = rand() % 62;\n        captcha[i] = chars[r];\n    }\n\n    captcha[6] = '\\0';\n    cout \u003c\u003c \"CAPTCHA: \" \u003c\u003c captcha \u003c\u003c endl;\n    for (int i = 1; i \u003c= 3; i++) {\n        cout \u003c\u003c \"Enter CAPTCHA: \";\n        cin.width(100);\n        cin \u003e\u003e input;\n        if (strcmp(captcha, input) == 0) {\n            cout \u003c\u003c \"CAPTCHA Verified!\" \u003c\u003c endl;\n            return 0;\n        }\n        else {\n            cout \u003c\u003c \"Wrong CAPTCHA\" \u003c\u003c endl;\n            cout \u003c\u003c \"Attempts left: \" \u003c\u003c 3 - i \u003c\u003c endl;\n        }\n    }\n\n    cout \u003c\u003c \"Verification failed. Access denied.\" \u003c\u003c endl;\n    return 0;\n}\n","studied":true}];
+  const $ = (s,root=document)=>root.querySelector(s);
+  const list = $("#programs");
+  const search = $("#search");
+  let filter = "all";
+  let noticeTimer;
+
+  function toast(message){
+    const el=$("#toast"); el.textContent=message; el.classList.add("show");
+    clearTimeout(noticeTimer); noticeTimer=setTimeout(()=>el.classList.remove("show"),2300);
+  }
+
+  async function copySource(code){
+    if(navigator.clipboard && navigator.clipboard.writeText) {
+      try{ await navigator.clipboard.writeText(code); return true; } catch(e) {}
+    }
+    // Fallback for local file:// pages and older browsers.
+    const t=document.createElement("textarea");
+    t.value=code; t.style.position="fixed"; t.style.left="-9999px"; t.setAttribute("readonly","");
+    document.body.appendChild(t);t.focus();t.select();t.setSelectionRange(0,t.value.length);
+    let ok=false;
+    try{ok=document.execCommand("copy");}catch(e){ok=false;}
+    t.remove();
+    return ok;
+  }
+
+  function downloadSource(program){
+    const blob=new Blob([program.code],{type:"text/plain;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;a.download=program.file;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
+  function makeButton(label, className, handler){
+    const button=document.createElement("button");
+    button.className=className;button.type="button";button.textContent=label;
+    button.addEventListener("click",handler);
+    return button;
+  }
+
+  function cardFor(p){
+    const card=document.createElement("article");card.className="card";
+    card.dataset.number=String(p.number);
+    card.dataset.studied=p.studied?"1":"0";
+    card.dataset.search=(p.title+" "+p.file+" "+p.number).toLowerCase();
+
+    const head=document.createElement("div");head.className="cardhead";
+    const number=document.createElement("div");number.className="number";
+    number.textContent=String(p.number).padStart(2,"0");
+    const heading=document.createElement("div");heading.className="heading";
+    const title=document.createElement("h2");title.textContent=p.title;
+    const filename=document.createElement("div");filename.className="filename";filename.textContent=p.file;
+    heading.append(title,filename);
+
+    const actions=document.createElement("div");actions.className="actions";
+    const view=makeButton("View code","btn",()=>{
+      card.classList.toggle("open");
+      view.textContent=card.classList.contains("open")?"Hide code":"View code";
+      view.setAttribute("aria-expanded",String(card.classList.contains("open")));
+    });
+    view.setAttribute("aria-expanded","false");
+    const copy=makeButton("Copy code","btn primary",async()=>{
+      const good=await copySource(p.code);
+      if(good){toast("Copied "+p.file);copy.textContent="Copied ✓";setTimeout(()=>copy.textContent="Copy code",1700);}
+      else{card.classList.add("open");view.textContent="Hide code";view.setAttribute("aria-expanded","true");toast("Copy was blocked — select and copy the visible code.");}
+    });
+    const download=makeButton("Download .cpp","btn",()=>downloadSource(p));
+    actions.append(view,copy,download);
+
+    const codewrap=document.createElement("section");codewrap.className="codewrap";
+    const codehead=document.createElement("div");codehead.className="codehead";
+    const filelabel=document.createElement("span");filelabel.textContent=p.file;
+    const language=document.createElement("span");language.textContent="C++17";
+    codehead.append(filelabel,language);
+    const pre=document.createElement("pre");const code=document.createElement("code");
+    code.textContent=p.code;pre.append(code);codewrap.append(codehead,pre);
+    head.append(number,heading,actions);card.append(head,codewrap);
+    return card;
+  }
+
+  const nodes=PROGRAMS.map(cardFor);
+  nodes.forEach(node=>list.appendChild(node));
+
+  function refresh(){
+    let count=0;const query=search.value.toLowerCase().trim();
+    nodes.forEach(node=>{
+      const matchesFilter=filter==="all"||(filter==="studied"&&node.dataset.studied==="1")||(filter==="remaining"&&node.dataset.studied==="0");
+      const matchesSearch=!query||node.dataset.search.includes(query);
+      const visible=matchesFilter&&matchesSearch;
+      node.hidden=!visible;
+      if(visible)count++;
+    });
+    $("#resultCount").textContent=count+" program"+(count===1?"":"s")+" shown";
+    $("#noResults").hidden=count!==0;
+  }
+  search.addEventListener("input",refresh);
+  document.querySelectorAll("[data-filter]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      filter=btn.dataset.filter;
+      document.querySelectorAll("[data-filter]").forEach(t=>t.classList.toggle("active",t===btn));
+      refresh();
+    });
+  });
+  $("#expandAll").addEventListener("click",()=>{
+    nodes.filter(n=>!n.hidden).forEach(n=>{
+      n.classList.add("open");
+      const view=n.querySelector(".actions .btn");view.textContent="Hide code";view.setAttribute("aria-expanded","true");
+    });
+  });
+  $("#collapseAll").addEventListener("click",()=>{
+    nodes.forEach(n=>{
+      n.classList.remove("open");
+      const view=n.querySelector(".actions .btn");view.textContent="View code";view.setAttribute("aria-expanded","false");
+    });
+  });
+  refresh();
+  </script>
+</body>
+</html>
+;\n        a[count].freq = a[x].freq + a[y].freq;\n        a[count].left = x;\n        a[count].right = y;\n        a[count].used = false;\n        count++;\n    }\n\n    char code[100];\n    cout \u003c\u003c \"\\nHuffman Codes:\\n\";\n    printCode(count - 1, code, 0);\n    return 0;\n}\n","studied":true},{"number":5,"file":"05_Zero_One_Knapsack_DP.cpp","title":"0/1 Knapsack DP","code":"#include \u003ciostream\u003e\n#include \u003calgorithm\u003e\n\nusing namespace std;\n\nint dp[101][1001];\n\nint main() {\n    int n, capacity;\n    int weight[100], profit[100];\n    cout \u003c\u003c \"Enter number of items: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 100) {\n        cout \u003c\u003c \"Invalid size\";\n        return 0;\n    }\n\n    for (int i = 0; i \u003c n; i++) {\n        cout \u003c\u003c \"Enter weight and profit for item \" \u003c\u003c i + 1 \u003c\u003c \": \";\n        cin \u003e\u003e weight[i] \u003e\u003e profit[i];\n        if (weight[i] \u003c 0 || profit[i] \u003c 0) {\n            cout \u003c\u003c \"Invalid item\";\n            return 0;\n        }\n    }\n\n    cout \u003c\u003c \"Enter bag capacity: \";\n    cin \u003e\u003e capacity;\n    if (capacity \u003c 0 || capacity \u003e 1000) {\n        cout \u003c\u003c \"Invalid capacity\";\n        return 0;\n    }\n\n    for (int i = 0; i \u003c= n; i++) {\n        for (int w = 0; w \u003c= capacity; w++) {\n            if (i == 0 || w == 0) {\n                dp[i][w] = 0;\n            }\n            else if (weight[i-1] \u003c= w) {\n                dp[i][w] = max(profit[i-1] + dp[i-1][w-weight[i-1]],\n                               dp[i-1][w]);\n            }\n            else {\n                dp[i][w] = dp[i-1][w];\n            }\n        }\n    }\n\n    cout \u003c\u003c \"Maximum Profit = \" \u003c\u003c dp[n][capacity] \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":6,"file":"06_Matrix_Chain_Multiplication.cpp","title":"Matrix Chain Multiplication","code":"#include \u003ciostream\u003e\n#include \u003cclimits\u003e\n\nusing namespace std;\n\nint m[51][51], s[51][51];\n\nvoid printOrder(int i, int j) {\n    if (i == j) {\n        cout \u003c\u003c \"A\" \u003c\u003c i;\n        return;\n    }\n\n    cout \u003c\u003c \"(\";\n    printOrder(i, s[i][j]);\n    printOrder(s[i][j] + 1, j);\n    cout \u003c\u003c \")\";\n}\n\nint main() {\n    int n, p[51];\n    cout \u003c\u003c \"Enter number of matrices: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 50) {\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter dimensions (\" \u003c\u003c n+1 \u003c\u003c \" numbers): \";\n    for (int i = 0; i \u003c= n; i++) {\n        cin \u003e\u003e p[i];\n    }\n\n    for (int i = 1; i \u003c= n; i++) {\n        m[i][i] = 0;\n    }\n\n    for (int L = 2; L \u003c= n; L++) {\n        for (int i = 1; i \u003c= n - L + 1; i++) {\n            int j = i + L - 1;\n            m[i][j] = INT_MAX;\n            for (int k = i; k \u003c j; k++) {\n                int cost = m[i][k] + m[k+1][j]\n                         + p[i-1] * p[k] * p[j];\n                if (cost \u003c m[i][j]) {\n                    m[i][j] = cost;\n                    s[i][j] = k;\n                }\n            }\n        }\n    }\n\n    cout \u003c\u003c \"Minimum multiplications = \" \u003c\u003c m[1][n] \u003c\u003c endl;\n    cout \u003c\u003c \"Optimal order: \";\n    printOrder(1, n);\n    cout \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":7,"file":"07_N_Queens_Backtracking.cpp","title":"N Queens Backtracking","code":"#include \u003ciostream\u003e\n#include \u003ccstdlib\u003e\n\nusing namespace std;\n\nint board[4][4] = {0};\nint n = 4, total = 0;\n\nbool isSafe(int row, int col) {\n    for (int i = 0; i \u003c row; i++) {\n        for (int j = 0; j \u003c n; j++) {\n            if (board[i][j] == 1) {\n                if (j == col || abs(i-row) == abs(j-col)) {\n                    return false;\n                }\n            }\n        }\n    }\n\n    return true;\n}\n\nvoid printBoard() {\n    total++;\n    cout \u003c\u003c \"\\nSolution \" \u003c\u003c total \u003c\u003c \":\\n\";\n    for (int i = 0; i \u003c n; i++) {\n        for (int j = 0; j \u003c n; j++) {\n            if (board[i][j] == 1) {\n                cout \u003c\u003c \"Q \";\n            }\n        }\n        else {\n            cout \u003c\u003c \". \";\n        }\n\n        cout \u003c\u003c endl;\n    }\n}\n\nvoid solve(int row) {\n    if (row == n) {\n        printBoard();\n        return;\n    }\n\n    for (int col = 0; col \u003c n; col++) {\n        if (isSafe(row, col)) {\n            board[row][col] = 1;\n            solve(row + 1);\n            board[row][col] = 0;\n        }\n    }\n}\n\nint main() {\n    solve(0);\n    cout \u003c\u003c \"\\nTotal solutions = \" \u003c\u003c total \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":8,"file":"08_Sum_of_Subsets_Backtracking.cpp","title":"Sum of Subsets Backtracking","code":"#include \u003ciostream\u003e\n\nusing namespace std;\n\nint a[100], x[100];\nint n, target, total = 0;\n\nvoid subset(int i, int sum, int remaining) {\n    if (sum == target) {\n        total++;\n        cout \u003c\u003c \"Subset: \";\n        for (int j = 0; j \u003c i; j++) {\n            if (x[j] == 1) {\n                cout \u003c\u003c a[j] \u003c\u003c \" \";\n            }\n        }\n\n        cout \u003c\u003c endl;\n        return;\n    }\n\n    if (i == n || sum \u003e target || sum + remaining \u003c target) {\n        return;\n    }\n\n    x[i] = 1;\n    subset(i + 1, sum + a[i], remaining - a[i]);\n    x[i] = 0;\n    subset(i + 1, sum, remaining - a[i]);\n}\n\nint main() {\n    int remaining = 0;\n    cout \u003c\u003c \"Enter number of elements: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 100) {\n        cout \u003c\u003c \"Invalid size\";\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter positive elements: \";\n    for (int i = 0; i \u003c n; i++) {\n        cin \u003e\u003e a[i];\n        if (a[i] \u003c= 0) {\n            cout \u003c\u003c \"Only positive elements supported\";\n            return 0;\n        }\n\n        remaining += a[i];\n    }\n\n    cout \u003c\u003c \"Enter target sum: \";\n    cin \u003e\u003e target;\n    if (target \u003c 0) {\n        return 0;\n    }\n\n    subset(0, 0, remaining);\n    if (total == 0) {\n        cout \u003c\u003c \"No subset found\" \u003c\u003c endl;\n    }\n    else {\n        cout \u003c\u003c \"Total subsets = \" \u003c\u003c total \u003c\u003c endl;\n    }\n\n    return 0;\n}\n","studied":true},{"number":9,"file":"09_Zero_One_Knapsack_Branch_and_Bound.cpp","title":"0/1 Knapsack Branch and Bound","code":"#include \u003ciostream\u003e\n\nusing namespace std;\n\nstruct Item {\n    int weight, profit;\n};\nItem items[100];\nint n, capacity;\nlong long bestProfit = 0;\nint taken[100] = {0};\nint bestTaken[100] = {0};\n// Upper bound using Fractional Knapsack after ratio sorting.\n\ndouble upperBound(int i, int weight, long long profit) {\n    int remaining = capacity - weight;\n    double bound = profit;\n    while (i \u003c n \u0026\u0026 items[i].weight \u003c= remaining) {\n        remaining -= items[i].weight;\n        bound += items[i].profit;\n        i++;\n    }\n\n    if (i \u003c n) {\n        bound += (double)remaining * items[i].profit / items[i].weight;\n    }\n\n    return bound;\n}\n\nvoid knapsack(int i, int weight, long long profit) {\n    if (profit \u003e bestProfit) {\n        bestProfit = profit;\n        for (int j = 0; j \u003c n; j++) {\n            bestTaken[j] = taken[j];\n        }\n    }\n\n    if (i == n || weight == capacity) {\n        return;\n    }\n\n    if (upperBound(i, weight, profit) \u003c= bestProfit) {\n        return;\n    }\n\n    // Include item i.\n    if (items[i].weight \u003c= capacity - weight) {\n        taken[i] = 1;\n        knapsack(i + 1, weight + items[i].weight,\n                 profit + items[i].profit);\n        taken[i] = 0;\n    }\n\n    // Exclude item i.\n    knapsack(i + 1, weight, profit);\n}\n\nint main() {\n    cout \u003c\u003c \"Enter number of items and capacity: \";\n    cin \u003e\u003e n \u003e\u003e capacity;\n    if (n \u003c 0 || n \u003e 100 || capacity \u003c 0) {\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter weight and profit of each item:\\n\";\n    for (int i = 0; i \u003c n; i++) {\n        cin \u003e\u003e items[i].weight \u003e\u003e items[i].profit;\n        if (items[i].weight \u003c= 0 || items[i].profit \u003c 0) {\n            return 0;\n        }\n    }\n\n    // Sort by profit/weight ratio (highest first).\n    for (int i = 0; i \u003c n - 1; i++) {\n        for (int j = i + 1; j \u003c n; j++) {\n            if (1LL * items[j].profit * items[i].weight \u003e\n               1LL * items[i].profit * items[j].weight) {\n                Item temp = items[i];\n                items[i] = items[j];\n                items[j] = temp;\n            }\n        }\n    }\n\n    knapsack(0, 0, 0);\n    cout \u003c\u003c \"Maximum profit = \" \u003c\u003c bestProfit \u003c\u003c endl;\n    cout \u003c\u003c \"Selected items (weight, profit): \";\n    int totalWeight = 0;\n    for (int i = 0; i \u003c n; i++) {\n        if (bestTaken[i]) {\n            cout \u003c\u003c \"(\" \u003c\u003c items[i].weight \u003c\u003c \", \" \u003c\u003c items[i].profit \u003c\u003c \") \";\n            totalWeight += items[i].weight;\n        }\n    }\n\n    cout \u003c\u003c \"\\nTotal weight = \" \u003c\u003c totalWeight \u003c\u003c endl;\n    return 0;\n}\n","studied":false},{"number":10,"file":"10_TSP_Branch_and_Bound.cpp","title":"TSP Branch and Bound","code":"#include \u003ciostream\u003e\n#include \u003cclimits\u003e\n\nusing namespace std;\n\nint n, a[15][15], mn[15];\nint visited[15], path[15], bestPath[15];\nint best = INT_MAX;\n\nvoid tsp(int level, int last, int cost) {\n    if (level == n) {\n        int total = cost + a[last][0];\n        if (total \u003c best) {\n            best = total;\n            for (int i = 0; i \u003c n; i++) {\n                bestPath[i] = path[i];\n            }\n        }\n\n        return;\n    }\n\n    for (int j = 1; j \u003c n; j++) {\n        if (!visited[j]) {\n            int newCost = cost + a[last][j];\n            visited[j] = 1;\n            int bound = newCost + mn[j];\n            for (int k = 0; k \u003c n; k++) {\n                if (!visited[k]) {\n                    bound += mn[k];\n                }\n            }\n\n            if (bound \u003c best) {\n                path[level] = j;\n                tsp(level + 1, j, newCost);\n            }\n\n            visited[j] = 0;\n        }\n    }\n}\n\nint main() {\n    cout \u003c\u003c \"Enter number of cities: \";\n    cin \u003e\u003e n;\n    if (n \u003c 2 || n \u003e 15) {\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter cost matrix:\\n\";\n    for (int i = 0; i \u003c n; i++) {\n        for (int j = 0; j \u003c n; j++) {\n            cin \u003e\u003e a[i][j];\n        }\n    }\n\n    for (int i = 0; i \u003c n; i++) {\n        mn[i] = INT_MAX;\n        for (int j = 0; j \u003c n; j++) {\n            if (i != j \u0026\u0026 a[i][j] \u003c mn[i]) {\n                mn[i] = a[i][j];\n            }\n        }\n    }\n\n    visited[0] = 1;\n    path[0] = 0;\n    tsp(1, 0, 0);\n    cout \u003c\u003c \"Minimum cost = \" \u003c\u003c best \u003c\u003c endl;\n    cout \u003c\u003c \"Path: \";\n    for (int i = 0; i \u003c n; i++) {\n        cout \u003c\u003c bestPath[i] + 1 \u003c\u003c \" -\u003e \";\n    }\n\n    cout \u003c\u003c 1 \u003c\u003c endl;\n    return 0;\n}\n","studied":false},{"number":11,"file":"11_Naive_String_Matching.cpp","title":"Naive String Matching","code":"#include \u003ciostream\u003e\n#include \u003ccstring\u003e\n\nusing namespace std;\n\nint main() {\n    char text[100], pat[100];\n    cout \u003c\u003c \"Enter the text: \";\n    cin.getline(text, 100);\n    cout \u003c\u003c \"Enter pattern: \";\n    cin.getline(pat, 100);\n    int n = strlen(text);\n    int m = strlen(pat);\n    if (m == 0 || m \u003e n) {\n        cout \u003c\u003c \"Invalid pattern\";\n        return 0;\n    }\n\n    int count = 0;\n    for (int i = 0; i \u003c= n - m; i++) {\n        int j;\n        for (j = 0; j \u003c m; j++) {\n            if (text[i+j] != pat[j]) {\n                break;\n            }\n        }\n\n        if (j == m) {\n            cout \u003c\u003c \"Pattern found at index \" \u003c\u003c i \u003c\u003c endl;\n            count++;\n        }\n    }\n\n    if (count == 0) {\n        cout \u003c\u003c \"No pattern found\" \u003c\u003c endl;\n    }\n    else {\n        cout \u003c\u003c \"Total patterns found = \" \u003c\u003c count \u003c\u003c endl;\n    }\n\n    return 0;\n}\n","studied":true},{"number":12,"file":"12_Rabin_Karp_and_Boyer_Moore.cpp","title":"Rabin Karp and Boyer Moore","code":"#include \u003ciostream\u003e\n#include \u003ccstring\u003e\n\nusing namespace std;\n\n// Simplified Rabin-Karp using an additive rolling hash.\n\nvoid rabinKarp(char text[], char pat[]) {\n    int n = strlen(text), m = strlen(pat);\n    int p = 0, t = 0, count = 0;\n    for (int i = 0; i \u003c m; i++) {\n        p += pat[i];\n        t += text[i];\n    }\n\n    for (int i = 0; i \u003c= n - m; i++) {\n        if (p == t) {\n            int j;\n            for (j = 0; j \u003c m; j++) {\n                if (text[i+j] != pat[j]) {\n                    break;\n                }\n            }\n\n            if (j == m) {\n                cout \u003c\u003c \"Pattern found at \" \u003c\u003c i \u003c\u003c endl;\n                count++;\n            }\n        }\n\n        if (i \u003c n - m) {\n            t = t - text[i] + text[i+m];\n        }\n    }\n\n    if (count == 0) {\n        cout \u003c\u003c \"Pattern not found\" \u003c\u003c endl;\n    }\n\n    cout \u003c\u003c \"Total matches: \" \u003c\u003c count \u003c\u003c endl;\n}\n\n// Simplified Boyer-Moore using the bad-character rule.\n\nvoid boyerMoore(char text[], char pat[]) {\n    int n = strlen(text), m = strlen(pat);\n    int last[256], count = 0;\n    for (int i = 0; i \u003c 256; i++) {\n        last[i] = -1;\n    }\n\n    for (int i = 0; i \u003c m; i++) {\n        last[(unsigned char)pat[i]] = i;\n    }\n\n    int s = 0;\n    while (s \u003c= n - m) {\n        int j = m - 1;\n        while (j \u003e= 0 \u0026\u0026 pat[j] == text[s+j]) {\n            j--;\n        }\n\n        if (j \u003c 0) {\n            cout \u003c\u003c \"Pattern found at \" \u003c\u003c s \u003c\u003c endl;\n            count++;\n            s++;\n            // Simple safe shift after a full match.\n        }\n        else {\n            int shift = j - last[(unsigned char)text[s+j]];\n            if (shift \u003c 1) {\n                shift = 1;\n            }\n\n            s += shift;\n        }\n    }\n\n    if (count == 0) {\n        cout \u003c\u003c \"Pattern not found\" \u003c\u003c endl;\n    }\n\n    cout \u003c\u003c \"Total matches: \" \u003c\u003c count \u003c\u003c endl;\n}\n\nint main() {\n    char text[100], pat[100];\n    cout \u003c\u003c \"Enter text: \";\n    cin.getline(text, 100);\n    cout \u003c\u003c \"Enter pattern: \";\n    cin.getline(pat, 100);\n    int n = strlen(text), m = strlen(pat);\n    if (m == 0 || m \u003e n) {\n        cout \u003c\u003c \"Invalid Pattern\" \u003c\u003c endl;\n        return 0;\n    }\n\n    cout \u003c\u003c \"\\nRabin-Karp:\\n\";\n    rabinKarp(text, pat);\n    cout \u003c\u003c \"\\nBoyer-Moore:\\n\";\n    boyerMoore(text, pat);\n    return 0;\n}\n","studied":true},{"number":13,"file":"13_Randomized_Quick_Sort.cpp","title":"Randomized Quick Sort","code":"#include \u003ciostream\u003e\n#include \u003calgorithm\u003e\n#include \u003ccstdlib\u003e\n#include \u003cctime\u003e\n\nusing namespace std;\n\nint partition(int a[], int low, int high) {\n    int pivot = a[low], i = low;\n    for (int j = low + 1; j \u003c= high; j++) {\n        if (a[j] \u003c= pivot) {\n            i++;\n            swap(a[i], a[j]);\n        }\n    }\n\n    swap(a[low], a[i]);\n    return i;\n}\n\nint randomPartition(int a[], int low, int high) {\n    int r = low + rand() % (high - low + 1);\n    swap(a[r], a[low]);\n    return partition(a, low, high);\n}\n\nvoid quickSort(int a[], int low, int high) {\n    if (low \u003c high) {\n        int pi = randomPartition(a, low, high);\n        quickSort(a, low, pi - 1);\n        quickSort(a, pi + 1, high);\n    }\n}\n\nint main() {\n    srand(time(0));\n    int n, a[100];\n    cout \u003c\u003c \"Enter number of elements: \";\n    cin \u003e\u003e n;\n    if (n \u003c 1 || n \u003e 100) {\n        cout \u003c\u003c \"Invalid size\";\n        return 0;\n    }\n\n    cout \u003c\u003c \"Enter elements: \";\n    for (int i = 0; i \u003c n; i++) {\n        cin \u003e\u003e a[i];\n    }\n\n    quickSort(a, 0, n - 1);\n    cout \u003c\u003c \"Sorted Array: \";\n    for (int i = 0; i \u003c n; i++) {\n        cout \u003c\u003c a[i] \u003c\u003c \" \";\n    }\n\n    cout \u003c\u003c endl;\n    return 0;\n}\n","studied":true},{"number":14,"file":"14_CAPTCHA_Generation_and_Verification.cpp","title":"CAPTCHA Generation and Verification","code":"#include \u003ciostream\u003e\n#include \u003ccstdlib\u003e\n#include \u003cctime\u003e\n#include \u003ccstring\u003e\n\nusing namespace std;\n\nint main() {\n    char chars[] = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";\n    char captcha[7], input[100];\n    srand(time(0));\n    for (int i = 0; i \u003c 6; i++) {\n        int r = rand() % 62;\n        captcha[i] = chars[r];\n    }\n\n    captcha[6] = '\\0';\n    cout \u003c\u003c \"CAPTCHA: \" \u003c\u003c captcha \u003c\u003c endl;\n    for (int i = 1; i \u003c= 3; i++) {\n        cout \u003c\u003c \"Enter CAPTCHA: \";\n        cin.width(100);\n        cin \u003e\u003e input;\n        if (strcmp(captcha, input) == 0) {\n            cout \u003c\u003c \"CAPTCHA Verified!\" \u003c\u003c endl;\n            return 0;\n        }\n        else {\n            cout \u003c\u003c \"Wrong CAPTCHA\" \u003c\u003c endl;\n            cout \u003c\u003c \"Attempts left: \" \u003c\u003c 3 - i \u003c\u003c endl;\n        }\n    }\n\n    cout \u003c\u003c \"Verification failed. Access denied.\" \u003c\u003c endl;\n    return 0;\n}\n","studied":true}];
+  const $ = (s,root=document)=>root.querySelector(s);
+  const list = $("#programs");
+  const search = $("#search");
+  let filter = "all";
+  let noticeTimer;
+
+  function toast(message){
+    const el=$("#toast"); el.textContent=message; el.classList.add("show");
+    clearTimeout(noticeTimer); noticeTimer=setTimeout(()=>el.classList.remove("show"),2300);
+  }
+
+  async function copySource(code){
+    if(navigator.clipboard && navigator.clipboard.writeText) {
+      try{ await navigator.clipboard.writeText(code); return true; } catch(e) {}
+    }
+    // Fallback for local file:// pages and older browsers.
+    const t=document.createElement("textarea");
+    t.value=code; t.style.position="fixed"; t.style.left="-9999px"; t.setAttribute("readonly","");
+    document.body.appendChild(t);t.focus();t.select();t.setSelectionRange(0,t.value.length);
+    let ok=false;
+    try{ok=document.execCommand("copy");}catch(e){ok=false;}
+    t.remove();
+    return ok;
+  }
+
+  function downloadSource(program){
+    const blob=new Blob([program.code],{type:"text/plain;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;a.download=program.file;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
+  function makeButton(label, className, handler){
+    const button=document.createElement("button");
+    button.className=className;button.type="button";button.textContent=label;
+    button.addEventListener("click",handler);
+    return button;
+  }
+
+  function cardFor(p){
+    const card=document.createElement("article");card.className="card";
+    card.dataset.number=String(p.number);
+    card.dataset.studied=p.studied?"1":"0";
+    card.dataset.search=(p.title+" "+p.file+" "+p.number).toLowerCase();
+
+    const head=document.createElement("div");head.className="cardhead";
+    const number=document.createElement("div");number.className="number";
+    number.textContent=String(p.number).padStart(2,"0");
+    const heading=document.createElement("div");heading.className="heading";
+    const title=document.createElement("h2");title.textContent=p.title;
+    const filename=document.createElement("div");filename.className="filename";filename.textContent=p.file;
+    heading.append(title,filename);
+
+    const actions=document.createElement("div");actions.className="actions";
+    const view=makeButton("View code","btn",()=>{
+      card.classList.toggle("open");
+      view.textContent=card.classList.contains("open")?"Hide code":"View code";
+      view.setAttribute("aria-expanded",String(card.classList.contains("open")));
+    });
+    view.setAttribute("aria-expanded","false");
+    const copy=makeButton("Copy code","btn primary",async()=>{
+      const good=await copySource(p.code);
+      if(good){toast("Copied "+p.file);copy.textContent="Copied ✓";setTimeout(()=>copy.textContent="Copy code",1700);}
+      else{card.classList.add("open");view.textContent="Hide code";view.setAttribute("aria-expanded","true");toast("Copy was blocked — select and copy the visible code.");}
+    });
+    const download=makeButton("Download .cpp","btn",()=>downloadSource(p));
+    actions.append(view,copy,download);
+
+    const codewrap=document.createElement("section");codewrap.className="codewrap";
+    const codehead=document.createElement("div");codehead.className="codehead";
+    const filelabel=document.createElement("span");filelabel.textContent=p.file;
+    const language=document.createElement("span");language.textContent="C++17";
+    codehead.append(filelabel,language);
+    const pre=document.createElement("pre");const code=document.createElement("code");
+    code.textContent=p.code;pre.append(code);codewrap.append(codehead,pre);
+    head.append(number,heading,actions);card.append(head,codewrap);
+    return card;
+  }
+
+  const nodes=PROGRAMS.map(cardFor);
+  nodes.forEach(node=>list.appendChild(node));
+
+  function refresh(){
+    let count=0;const query=search.value.toLowerCase().trim();
+    nodes.forEach(node=>{
+      const matchesFilter=filter==="all"||(filter==="studied"&&node.dataset.studied==="1")||(filter==="remaining"&&node.dataset.studied==="0");
+      const matchesSearch=!query||node.dataset.search.includes(query);
+      const visible=matchesFilter&&matchesSearch;
+      node.hidden=!visible;
+      if(visible)count++;
+    });
+    $("#resultCount").textContent=count+" program"+(count===1?"":"s")+" shown";
+    $("#noResults").hidden=count!==0;
+  }
+  search.addEventListener("input",refresh);
+  document.querySelectorAll("[data-filter]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      filter=btn.dataset.filter;
+      document.querySelectorAll("[data-filter]").forEach(t=>t.classList.toggle("active",t===btn));
+      refresh();
+    });
+  });
+  $("#expandAll").addEventListener("click",()=>{
+    nodes.filter(n=>!n.hidden).forEach(n=>{
+      n.classList.add("open");
+      const view=n.querySelector(".actions .btn");view.textContent="Hide code";view.setAttribute("aria-expanded","true");
+    });
+  });
+  $("#collapseAll").addEventListener("click",()=>{
+    nodes.forEach(n=>{
+      n.classList.remove("open");
+      const view=n.querySelector(".actions .btn");view.textContent="View code";view.setAttribute("aria-expanded","false");
+    });
+  });
+  refresh();
+  </script>
+</body>
+</html>
