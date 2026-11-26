@@ -8,13 +8,8 @@ struct Item {
 Item items[100];
 int n, capacity;
 long long bestProfit = 0;
-int taken[100] = {
-    0
-}
-
-, bestTaken[100] = {
-    0
-};
+int taken[100] = {0};
+int bestTaken[100] = {0};
 // Upper bound using Fractional Knapsack after ratio sorting.
 
 double upperBound(int i, int weight, long long profit) {
