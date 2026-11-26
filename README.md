@@ -4,27 +4,27 @@ All **14 Design and Analysis of Algorithms** practical programs are collected he
 
 | No. | Topic | Source |
 |---|---|---|
-| 01 | Merge Sort | [Assignment_01_Merge_Sort.cpp](Assignment_01_Merge_Sort.cpp) |
-| 02 | Strassen's Matrix Multiplication (2x2) | [Assignment_02_Strassens_Matrix_Multiplication.cpp](Assignment_02_Strassens_Matrix_Multiplication.cpp) |
-| 03 | Fractional Knapsack (Greedy) | [Assignment_03_Fractional_Knapsack.cpp](Assignment_03_Fractional_Knapsack.cpp) |
-| 04 | Huffman Coding | [Assignment_04_Huffman_Coding.cpp](Assignment_04_Huffman_Coding.cpp) |
-| 05 | 0/1 Knapsack (Dynamic Programming) | [Assignment_05_Zero_One_Knapsack_DP.cpp](Assignment_05_Zero_One_Knapsack_DP.cpp) |
-| 06 | Matrix Chain Multiplication (Dynamic Programming) | [Assignment_06_Matrix_Chain_Multiplication.cpp](Assignment_06_Matrix_Chain_Multiplication.cpp) |
-| 07 | N Queens (4x4 Backtracking) | [Assignment_07_N_Queens_Backtracking.cpp](Assignment_07_N_Queens_Backtracking.cpp) |
-| 08 | Sum of Subsets (Backtracking) | [Assignment_08_Sum_of_Subsets_Backtracking.cpp](Assignment_08_Sum_of_Subsets_Backtracking.cpp) |
-| 09 | 0/1 Knapsack (Branch and Bound) | [Assignment_09_Zero_One_Knapsack_Branch_and_Bound.cpp](Assignment_09_Zero_One_Knapsack_Branch_and_Bound.cpp) |
-| 10 | Travelling Salesperson Problem (Branch and Bound) | [Assignment_10_TSP_Branch_and_Bound.cpp](Assignment_10_TSP_Branch_and_Bound.cpp) |
-| 11 | Naive String Matching | [Assignment_11_Naive_String_Matching.cpp](Assignment_11_Naive_String_Matching.cpp) |
-| 12 | Rabin-Karp and Boyer-Moore String Matching | [Assignment_12_Rabin_Karp_and_Boyer_Moore.cpp](Assignment_12_Rabin_Karp_and_Boyer_Moore.cpp) |
-| 13 | Randomized Quick Sort | [Assignment_13_Randomized_Quick_Sort.cpp](Assignment_13_Randomized_Quick_Sort.cpp) |
-| 14 | CAPTCHA Generation and Verification | [Assignment_14_CAPTCHA_Generation_and_Verification.cpp](Assignment_14_CAPTCHA_Generation_and_Verification.cpp) |
+| 01 | Merge Sort | [01_Merge_Sort.cpp](01_Merge_Sort.cpp) |
+| 02 | Strassen's Matrix Multiplication (2x2) | [02_Strassens_Matrix_Multiplication.cpp](02_Strassens_Matrix_Multiplication.cpp) |
+| 03 | Fractional Knapsack (Greedy) | [03_Fractional_Knapsack.cpp](03_Fractional_Knapsack.cpp) |
+| 04 | Huffman Coding | [04_Huffman_Coding.cpp](04_Huffman_Coding.cpp) |
+| 05 | 0/1 Knapsack (Dynamic Programming) | [05_Zero_One_Knapsack_DP.cpp](05_Zero_One_Knapsack_DP.cpp) |
+| 06 | Matrix Chain Multiplication (Dynamic Programming) | [06_Matrix_Chain_Multiplication.cpp](06_Matrix_Chain_Multiplication.cpp) |
+| 07 | N Queens (4x4 Backtracking) | [07_N_Queens_Backtracking.cpp](07_N_Queens_Backtracking.cpp) |
+| 08 | Sum of Subsets (Backtracking) | [08_Sum_of_Subsets_Backtracking.cpp](08_Sum_of_Subsets_Backtracking.cpp) |
+| 09 | 0/1 Knapsack (Branch and Bound) | [09_Zero_One_Knapsack_Branch_and_Bound.cpp](09_Zero_One_Knapsack_Branch_and_Bound.cpp) |
+| 10 | Travelling Salesperson Problem (Branch and Bound) | [10_TSP_Branch_and_Bound.cpp](10_TSP_Branch_and_Bound.cpp) |
+| 11 | Naive String Matching | [11_Naive_String_Matching.cpp](11_Naive_String_Matching.cpp) |
+| 12 | Rabin-Karp and Boyer-Moore String Matching | [12_Rabin_Karp_and_Boyer_Moore.cpp](12_Rabin_Karp_and_Boyer_Moore.cpp) |
+| 13 | Randomized Quick Sort | [13_Randomized_Quick_Sort.cpp](13_Randomized_Quick_Sort.cpp) |
+| 14 | CAPTCHA Generation and Verification | [14_CAPTCHA_Generation_and_Verification.cpp](14_CAPTCHA_Generation_and_Verification.cpp) |
 
 ## How to run
 
 For example:
 
 ```bash
-g++ -std=c++17 Assignment_09_Zero_One_Knapsack_Branch_and_Bound.cpp -o knapsack
+g++ -std=c++17 09_Zero_One_Knapsack_Branch_and_Bound.cpp -o knapsack
 ./knapsack
 ```
 
