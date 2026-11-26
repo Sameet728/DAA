@@ -3,9 +3,7 @@
 
 using namespace std;
 
-int board[4][4] = {
-    0
-};
+int board[4][4] = {0};
 int n = 4, total = 0;
 
 bool isSafe(int row, int col) {
